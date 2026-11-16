@@ -742,6 +742,18 @@ const Navbar: React.FC = () => {
           </div>
 
           <a
+            href="/portfolio"
+            onClick={handleNavigation}
+            className={`navbar-link text-sm font-semibold ${
+              isTransparent
+                ? 'text-white hover:text-white/80'
+                : 'text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary'
+            }`}
+          >
+            Portfolio
+          </a>
+
+          <a
             href="/ai-products"
             onClick={handleNavigation}
             className={`navbar-link text-sm font-semibold ${

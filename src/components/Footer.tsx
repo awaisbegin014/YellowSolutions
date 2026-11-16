@@ -316,7 +316,7 @@ const slugify = (s: string) =>
 
 const usefulLinks = [
   { title: 'Why Choose Us', href: '#why-us' },
-  { title: 'Portfolio', href: '#portfolio' },
+  { title: 'Portfolio', href: '/portfolio' },
   { title: 'Pricing', href: '#pricing' },
   { title: 'Blogs', href: '/blogs' },
   { title: 'Careers', href: '/careers' },
