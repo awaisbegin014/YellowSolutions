@@ -4,6 +4,7 @@ import { Code, Blocks, Gauge, Layers, BarChart, Shield } from 'lucide-react';
 export const navItems: NavItem[] = [
   { title: 'Home', href: '#home' },
   { title: 'Services', href: '#services' },
+  { title: 'Portfolio', href: '/portfolio' },
   { title: 'About', href: '#why-us' },
   { title: 'Blogs', href: '#blogs' },
   { title: 'Offices', href: '#offices' },
