@@ -805,15 +805,19 @@ const ProjectShowcase: React.FC<Props> = ({ project, priority = false }) => {
 
         <div className="pf-ProjectShowcase_pillSlot">
           <a
-            href="/#contact"
+            href={project.liveUrl ?? '/#contact'}
             className="pf-ProjectShowcase_pill"
-            aria-label={`Start a project like ${project.name}`}
-            onClick={(e) => {
-              e.preventDefault();
-              openQuote();
-            }}
+            aria-label={project.liveUrl ? `View ${project.name} live` : `Start a project like ${project.name}`}
+            {...(project.liveUrl
+              ? { target: '_blank', rel: 'noopener noreferrer' }
+              : {
+                  onClick: (e: React.MouseEvent) => {
+                    e.preventDefault();
+                    openQuote();
+                  },
+                })}
           >
-            <span>Start a project</span>
+            <span>{project.liveUrl ? 'View project' : 'Start a project'}</span>
             <i aria-hidden="true">
               <span>↗</span>
             </i>
