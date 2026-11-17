@@ -69,37 +69,68 @@ const ProjectArticle: React.FC<Props> = ({ project, index, total, priority }) =>
               <dd>{m.value}</dd>
             </div>
           ))}
-          <div className="pf-ProjectArticle_access pf-ProjectArticle_st" style={sd(350)} data-emphasis="app">
-            <dt className="mono">Next step</dt>
-            <dd className="pf-ProjectArticle_accessNote">{project.accessNote}</dd>
-            <dd className="pf-ProjectArticle_accessLinks">
-              <a
-                href="/#contact"
-                onClick={quoteLink}
-                className="pf-ProjectArticle_accessLink pf-ProjectArticle_accessStrong"
-                aria-label={`Start a project like ${project.name}`}
-              >
-                <span>Start a project</span>
-                <i aria-hidden="true">
-                  <span>↗</span>
-                </i>
+          {project.access ? (
+            <div className="pf-ProjectArticle_access pf-ProjectArticle_st" style={sd(350)} data-emphasis="app">
+              <dt className="mono">{project.access.label}</dt>
+              {project.access.note && <dd className="pf-ProjectArticle_accessNote">{project.access.note}</dd>}
+              <dd className="pf-ProjectArticle_accessLinks">
+                {project.access.links.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`pf-ProjectArticle_accessLink${l.strong ? ' pf-ProjectArticle_accessStrong' : ''}`}
+                    aria-label={`${l.label}: ${project.name}`}
+                  >
+                    <span>{l.label}</span>
+                    <i aria-hidden="true">
+                      <span>↗</span>
+                    </i>
+                  </a>
+                ))}
+              </dd>
+            </div>
+          ) : project.metaLink ? (
+            <div className="pf-ProjectArticle_metaLink pf-ProjectArticle_st" style={sd(350)}>
+              <a href={project.metaLink} target="_blank" rel="noopener noreferrer" className="pf-ProjectArticle_textLink">
+                <span>View Website</span>
+                <i aria-hidden="true">↗</i>
               </a>
-              <a
-                href="/#services"
-                onClick={(e) => {
-                  e.preventDefault();
-                  goTo('#services');
-                }}
-                className="pf-ProjectArticle_accessLink"
-                aria-label="See our services"
-              >
-                <span>Our services</span>
-                <i aria-hidden="true">
-                  <span>↗</span>
-                </i>
-              </a>
-            </dd>
-          </div>
+            </div>
+          ) : (
+            <div className="pf-ProjectArticle_access pf-ProjectArticle_st" style={sd(350)} data-emphasis="app">
+              <dt className="mono">Next step</dt>
+              <dd className="pf-ProjectArticle_accessNote">{project.accessNote}</dd>
+              <dd className="pf-ProjectArticle_accessLinks">
+                <a
+                  href="/#contact"
+                  onClick={quoteLink}
+                  className="pf-ProjectArticle_accessLink pf-ProjectArticle_accessStrong"
+                  aria-label={`Start a project like ${project.name}`}
+                >
+                  <span>Start a project</span>
+                  <i aria-hidden="true">
+                    <span>↗</span>
+                  </i>
+                </a>
+                <a
+                  href="/#services"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    goTo('#services');
+                  }}
+                  className="pf-ProjectArticle_accessLink"
+                  aria-label="See our services"
+                >
+                  <span>Our services</span>
+                  <i aria-hidden="true">
+                    <span>↗</span>
+                  </i>
+                </a>
+              </dd>
+            </div>
+          )}
         </dl>
       </header>
 
@@ -108,7 +139,7 @@ const ProjectArticle: React.FC<Props> = ({ project, index, total, priority }) =>
       <div className="pf-ProjectArticle_body">
         <div className="pf-ProjectArticle_copy pf-ProjectArticle_st" style={sd(420)}>
           <p className="pf-ProjectArticle_summary">{project.summary}</p>
-          <h3 className="mono pf-ProjectArticle_builtTitle">What we deliver</h3>
+          <h3 className="mono pf-ProjectArticle_builtTitle">{project.builtTitle ?? 'What we deliver'}</h3>
           <ol className="pf-ProjectArticle_built">
             {project.built.map((item, i) => (
               <li key={i}>
@@ -130,23 +161,40 @@ const ProjectArticle: React.FC<Props> = ({ project, index, total, priority }) =>
           </ul>
           <p className="pf-ProjectArticle_disclosure">{project.disclosure}</p>
           <div className="pf-ProjectArticle_ctas">
-            <a href="/#contact" onClick={quoteLink} className="pf-ProjectArticle_primary">
-              <span>Start a project</span>
-              <span className="pf-ProjectArticle_primaryCircle" aria-hidden="true">
-                <span>↗</span>
-              </span>
-            </a>
-            <a
-              href="/#services"
-              onClick={(e) => {
-                e.preventDefault();
-                goTo('#services');
-              }}
-              className="pf-ProjectArticle_textLink"
-            >
-              <span>Explore services</span>
-              <i aria-hidden="true">↗</i>
-            </a>
+            {project.liveUrl ? (
+              <>
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="pf-ProjectArticle_primary">
+                  <span>View project</span>
+                  <span className="pf-ProjectArticle_primaryCircle" aria-hidden="true">
+                    <span>↗</span>
+                  </span>
+                </a>
+                <a href="/#contact" onClick={quoteLink} className="pf-ProjectArticle_textLink">
+                  <span>Start a project</span>
+                  <i aria-hidden="true">↗</i>
+                </a>
+              </>
+            ) : (
+              <>
+                <a href="/#contact" onClick={quoteLink} className="pf-ProjectArticle_primary">
+                  <span>Start a project</span>
+                  <span className="pf-ProjectArticle_primaryCircle" aria-hidden="true">
+                    <span>↗</span>
+                  </span>
+                </a>
+                <a
+                  href="/#services"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    goTo('#services');
+                  }}
+                  className="pf-ProjectArticle_textLink"
+                >
+                  <span>Explore services</span>
+                  <i aria-hidden="true">↗</i>
+                </a>
+              </>
+            )}
           </div>
         </aside>
       </div>

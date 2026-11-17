@@ -1,4 +1,5 @@
 import { services, testimonials } from '../../data/content';
+import { importedProjects } from './importedProjects';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Portfolio page content.
@@ -54,6 +55,14 @@ export interface Project {
   };
   metrics: ProjectMetric[];
   metricsSource: string;
+  /** heading above the "what we built" list (defaults to "What we deliver") */
+  builtTitle?: string;
+  /** the project's live site: turns the showcase pill and primary button into "View project" links */
+  liveUrl?: string;
+  /** replaces the default "Next step" block with project-specific links (apps, website...) */
+  access?: { label: string; note?: string; links: { label: string; href: string; strong?: boolean }[] };
+  /** a single "View Website" link shown under the meta rows */
+  metaLink?: string;
 }
 
 const P = '/images/portfolio';
@@ -440,7 +449,7 @@ const defs: Def[] = [
 
 const pageTotal = (dir: string) => library[dir].length;
 
-export const projects: Project[] = defs.map((d, i) => {
+const ownProjects: Project[] = defs.map((d, i) => {
   const a = ACCENTS[i % ACCENTS.length];
   const [a1, a2, a3, a4] = d.set;
   const pos = d.position ?? 'top';
@@ -490,6 +499,9 @@ export const projects: Project[] = defs.map((d, i) => {
     metricsSource: 'Counted from this portfolio · The Yellow Solutions',
   };
 });
+
+/** the original showcases first, then the additional projects (see importedProjects.ts) */
+export const projects: Project[] = [...ownProjects, ...importedProjects];
 
 /* ── Glance canvas ─────────────────────────────────────────────────────────── */
 
